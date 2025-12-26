@@ -1,0 +1,201 @@
+body {
+  background: url(../images/image.png);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.barackone {
+  width: 20vw;
+  margin: 30vh 0 0 55vw;
+  position: absolute;
+}
+.baracktwo {
+  width: 20vw;
+  margin: 30vh 0 0 64vw;
+  transform: rotateY(180deg);
+  position: absolute;
+}
+.dver {
+  width: 5vw;
+  margin: 39vh 0 0 67vw;
+  position: absolute;
+  z-index: 100;
+}
+.pudge {
+  width: 14vw;
+  margin: 38vh 0 0 55vw;
+  position: absolute;
+  transform: rotateY(180deg);
+}
+.sf {
+  width: 8vw;
+  margin: 40vh 0 0 76vw;
+  position: absolute;
+  z-index: 100;
+}
+
+/* ===== Сообщения ===== */
+.msg-seq-layer{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.msg-seq{
+  position: absolute;
+  max-width: min(420px, 86vw);
+  padding: 12px 14px;
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.08);
+  opacity: 0;
+  transform: translateY(8px);
+  will-change: opacity, transform;
+}
+
+.msg-left{ left: 16px; }
+.msg-right{ right: 16px; }
+
+/* Позиции сообщений 1-4 (как у вас было) */
+.msg-seq-layer .msg-seq:nth-child(1){ top: 35vh; left: 75vw; }
+.msg-seq-layer .msg-seq:nth-child(2){ top: 38vh; right: 32vw; }
+.msg-seq-layer .msg-seq:nth-child(3){ top: 35vh; left: 75vw; }
+.msg-seq-layer .msg-seq:nth-child(4){ top: 38vh; right: 32vw; }
+
+/* ДОБАВЛЕНО: 5-е сообщение — на том же месте, что и 1-е */
+.msg-five{
+  top: 35vh;
+  left: 75vw;
+}
+
+/* 1-4: последовательная анимация */
+@keyframes msgPopHold4s {
+  0%    { opacity: 0; transform: translateY(8px); }
+  6.52% { opacity: 1; transform: translateY(0); }
+  93.48%{ opacity: 1; transform: translateY(0); }
+  100%  { opacity: 0; transform: translateY(-6px); }
+}
+
+.msg-seq-layer.is-active .msg-seq{
+  animation: msgPopHold4s 4.6s ease-out both;
+}
+
+.msg-seq-layer.is-active .msg-seq:nth-child(1){ animation-delay: 0s; }
+.msg-seq-layer.is-active .msg-seq:nth-child(2){ animation-delay: 5.6s; }
+.msg-seq-layer.is-active .msg-seq:nth-child(3){ animation-delay: 11.2s; }
+.msg-seq-layer.is-active .msg-seq:nth-child(4){ animation-delay: 16.8s; }
+
+/* ВАЖНО: 5-е НЕ должно проигрываться в общей очереди 1-4 */
+.msg-seq-layer.is-active .msg-five{
+  animation: none !important;
+}
+
+/* Показ 5-го по классу */
+.msg-five.is-show{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+
+/* ===== Зимний эффект ===== */
+/* было 2147483646 — сделаем выше, чем сообщения */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483648;  /* ВАЖНО: выше .msg-seq-layer */
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255); /* полностью непрозрачный */
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation-name: fall;
+  animation-duration: var(--dur);
+  animation-delay: var(--delay);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+
+  .msg-seq-layer.is-active .msg-seq{
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*  */
+
+/* Ссылки с картинками, появляются вместе с 5-м сообщением */
+.side-links{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;          /* чтобы слой не мешал; клики включим на самих ссылках */
+  z-index: 2147483647;           /* поверх всего */
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.side-links.is-show{
+  opacity: 1;
+}
+
+.side-link{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: auto;          /* кликабельны */
+  text-decoration: none;
+}
+
+.side-link img{
+  width: 120px;                  /* строго 300px */
+  height: auto;
+  display: block;
+}
+
+/* Слева и справа у края */
+.side-link--left{ left: 16px; transform: rotateZ(180deg); top: 60vh;}
+.side-link--right{ right: 16px; top: 72vh;}
+
+/* На маленьких экранах, чтобы не вылезало сильно за границы */
+@media (max-width: 700px){
+  .side-link img{ width: min(300px, 42vw); }
+}

@@ -1,0 +1,189 @@
+body{
+  background-color: rgb(8, 170, 219);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ===== Заголовки по центру + красивое появление ===== */
+.container{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  z-index: 10;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 250ms ease;
+
+  /* чтобы элементы были ближе и аккуратно в колонку */
+  grid-auto-flow: row;
+  align-content: center;
+  justify-items: center;
+  row-gap: 8px; /* общий небольшой зазор */
+}
+
+.container.is-show{
+  opacity: 1;
+  visibility: visible;
+}
+
+.end-subtitle,
+.end-title{
+  color: #fff;
+  margin: 0;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,0.15),
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* h2 появляется первым */
+.end-subtitle{
+  max-width: 900px;
+  font-weight: 650;
+  font-size: clamp(18px, 2.2vw, 30px);
+  line-height: 1.15;        /* плотнее */
+  letter-spacing: 0.2px;
+
+  /* ещё ближе к h1 */
+  margin-bottom: -10px;
+
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(6px);
+}
+
+/* h1 появляется вторым */
+.end-title{
+  margin-top: -6px;          /* ещё ближе к h2 */
+  font-weight: 900;
+  font-size: clamp(44px, 6vw, 90px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+  filter: blur(10px);
+}
+
+/* Порядок появления: h2, потом h1 через 1.5 сек */
+.container.is-show .end-subtitle{
+  animation: popIn 700ms ease-out forwards;
+}
+
+.container.is-show .end-title{
+  animation: popInTitle 850ms cubic-bezier(.2,.9,.2,1) 1500ms forwards; /* 1.5 секунды */
+}
+
+/* Кнопка назад */
+.back-btn{
+  margin-top: 14px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(10, 30, 60, 0.25);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.back-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(10, 30, 60, 0.35);
+  border-color: rgba(255,255,255,0.55);
+}
+
+.back-btn:active{
+  transform: translateY(0);
+}
+
+/* Чтобы кнопка появлялась вместе с экраном (без отдельной задержки) */
+.container .back-btn{
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(6px);
+}
+
+.container.is-show .back-btn{
+  animation: popIn 600ms ease-out 1900ms forwards; /* после h1, можно изменить */
+}
+
+@keyframes popIn{
+  to{
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes popInTitle{
+  to{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ===== Зимний эффект (снег остаётся всегда) ===== */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483646;
+  opacity: 1;
+}
+
+/* tint (голубая заливка) исчезает после 5 сек */
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255);
+  opacity: 1;
+  transition: opacity 800ms ease;
+}
+
+.winter-fx.is-dim .winter-fx__tint{
+  opacity: 0;
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation: fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx__tint{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+}

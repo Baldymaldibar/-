@@ -1,0 +1,204 @@
+; HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="baracks">
+    <img src="../images/Group 5.png" class="sf">
+  </div>
+
+  
+            <!-- ...внутри <body>, лучше сразу ПОСЛЕ блока с сообщениями или перед winter-fx -->
+
+<div class="side-links" aria-hidden="true">
+  <a class="side-link side-link--left" href="../4/index4.html" rel="noopener">
+    <img src="../images/стрелка.png" alt="" width="300">
+  </a>
+
+  <a class="side-link side-link--right" href="../3/index3.html" rel="noopener">
+    <img src="../images/стрелка.png" alt="" width="300">
+  </a>
+</div>
+
+  <!-- Зимний эффект -->
+  <div class="winter-fx" aria-hidden="true">
+    <div class="winter-fx__tint"></div>
+    <div class="winter-fx__snow" id="snow"></div>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Диалоги (1-4)
+    const layer = document.querySelector('.msg-seq-layer');
+    if (layer) layer.classList.add('is-active');
+
+    // Зимний эффект
+    const fx = document.querySelector('.winter-fx');
+    const snow = document.getElementById('snow');
+    const pudge = document.querySelector('.pudge');
+
+    function makeSnow(count) {
+      if (!snow) return;
+      snow.innerHTML = '';
+
+      for (let i = 0; i < count; i++) {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake';
+
+        const size  = (Math.random() * 6 + 3).toFixed(1) + 'px';
+        const x     = (Math.random() * 100).toFixed(2) + 'vw';
+        const dur   = (Math.random() * 3 + 3.5).toFixed(2) + 's';
+        const delay = (-Math.random() * 6).toFixed(2) + 's';
+        const drift = ((Math.random() * 60) - 30).toFixed(1) + 'px';
+
+        flake.style.setProperty('--size', size);
+        flake.style.setProperty('--x', x);
+        flake.style.setProperty('--dur', dur);
+        flake.style.setProperty('--delay', delay);
+        flake.style.setProperty('--drift', drift);
+
+        snow.appendChild(flake);
+      }
+    }
+
+    function showFifthAndLinks() {
+      const five = document.querySelector('.msg-five');
+      const links = document.querySelector('.side-links');
+      if (five) five.classList.add('is-show');
+      if (links) links.classList.add('is-show');
+    }
+
+    const FX_ON_MS = 5000;         // эффект "работает" 5 секунд
+    const FX_FADE_IN_MS = 800;     // совпадает с transition opacity у .winter-fx
+    const FX_FADE_OUT_MS = 800;    // совпадает с transition opacity у .winter-fx
+    const SNOW_COUNT = 60;
+
+    // Запуск СРАЗУ при заходе (после загрузки DOM)
+    if (!fx) return;
+
+    makeSnow(SNOW_COUNT);
+    fx.classList.add('is-on');
+
+
+    // Через 5 секунд начинаем выключение
+    setTimeout(() => {
+      fx.classList.remove('is-on');   // начинается fade-out
+      if (snow) snow.innerHTML = '';
+
+      // После полного fade-out показываем 5-е сообщение + ссылки
+      setTimeout(() => {
+        showFifthAndLinks();
+      }, FX_FADE_OUT_MS);
+    }, FX_ON_MS);
+  });
+</script>
+
+
+</body>
+</html>
+
+
+; CSS
+body {
+  background: url(../images/image.png);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Картинка sf, которая есть в вашем HTML */
+.sf {
+  width: 8vw;
+  margin: 40vh 0 0 76vw;
+  position: absolute;
+  z-index: 100;
+}
+
+/* ===== Зимний эффект (голубой экран + снег) ===== */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483646;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255);
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation: fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+}
+
+/* ===== Ссылки-стрелки ===== */
+.side-links{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.side-links.is-show{ opacity: 1; }
+
+.side-link{
+  position: absolute;
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.side-link img{
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+.side-link--left{
+  left: 16px;
+  top: 60vh;
+  transform: rotateZ(180deg);
+}
+.side-link--right{
+  right: 16px;
+  top: 72vh;
+}
+
+@media (max-width: 700px){
+  .side-link img{ width: min(300px, 42vw); }
+}

@@ -1,0 +1,154 @@
+    body {
+      background: url(../images/fotor_creation_2025-12-24.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .calendar {
+      position: absolute;
+      left: 30vw;
+      top: 26vh;
+      width: 11vw;
+      height: 17vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .calendar img {
+        width: 5vw;
+    }
+    .calendar .date {
+      font-size: 2.1vw;
+      color: #e3533c;
+      font-family: Verdana, Arial, sans-serif;
+      font-weight: bold;
+    }
+    .character-sleep {
+      width: 17vw;
+      margin: 49vh 0 0 42vw;
+    }
+    .str {
+      position: absolute;
+      width: 12vw;
+      rotate: 270deg;
+      transform: rotateY(215deg);
+      left: 78vw;
+    }
+
+    .sleep-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .8s ease;
+  z-index: 999;
+}
+
+.sleep-overlay.is-on{
+  opacity: 1;
+}
+
+/* Слой для Zzz поверх всего */
+.zzz-layer{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Сами Zzz */
+.zzz{
+  position: absolute;
+  font-family: system-ui, Arial, sans-serif;
+  font-weight: 800;
+  color: rgba(255,255,255,.9);
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  transform: translate(-50%, -50%);
+  animation: zzzFloat 2.4s ease-out forwards;
+  user-select: none;
+}
+
+@keyframes zzzFloat{
+  0%   { opacity: 0; transform: translate(-50%, -50%) translate(0, 0) scale(.85); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(40px, -120px) scale(1.25); }
+}
+
+/* Чтобы transform работал ожидаемо */
+.character-sleep{
+  transform-origin: 50% 80%;
+  transition: transform 1s ease, filter 1s ease;
+  will-change: transform;
+}
+
+/* Состояние: спит (можно чуть “опустить”/смягчить) */
+.character-sleep.is-sleeping{
+  filter: brightness(0.95);
+  transform: translateY(0) rotate(0deg);
+}
+
+/* Состояние: встаёт */
+.character-sleep.is-standing{
+  transform: translateY(-40px) rotate(-2deg);
+}
+
+.character-sleep{
+  will-change: transform;
+  transition: transform 1.2s ease;
+}
+
+/* Пока спит — ничего не двигаем (можно оставить фильтр, если хочешь) */
+.character-sleep.is-sleeping{
+  transform: translateX(0) translateY(0);
+}
+
+/* Переход вправо после пробуждения */
+.character-sleep.is-walking-right{
+  transform: translateX(260px); /* подстрой расстояние */
+}
+
+.str{
+  position: relative; /* или absolute/fixed — как у тебя задумано */
+  z-index: 2001;      /* больше чем у overlay(999) и zzz-layer(1000) */
+}
+
+.sleep-overlay{ z-index: 50; }
+.zzz-layer{ z-index: 60; }
+
+a { /* не обязательно, но можно */
+  text-decoration: none;
+}
+
+.str{
+  position: fixed;
+  right: 30px;
+  bottom: 3px;
+  z-index: 2001;
+  transform: rotate(90deg);
+  width: 10vw;
+}
+
+.character-sleep{
+  will-change: transform;
+  transition: transform 1.2s ease;
+}
+
+/* движение вправо */
+.character-sleep.is-walking-right{
+  transform: translateX(260px);
+}
+
+/* отзеркаливание */
+.character-sleep.is-flipped{
+  transform: scaleX(-1);
+}
+
+/* ВАЖНО: если нужно и идти вправо, и быть отзеркаленным одновременно */
+.character-sleep.is-walking-right.is-flipped{
+  transform: translateX(260px) scaleX(-1);
+}

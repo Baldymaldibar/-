@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="baracks">
+    <img src="../images/{F44F74D0-944E-44F7-9C7C-934A5FBB06E6} 2.png" class="barackone">
+    <img src="../images/{F44F74D0-944E-44F7-9C7C-934A5FBB06E6} 2.png" class="baracktwo">
+    <img src="../images/dver.png" class="dver">
+    <img src="../images/Group 6.png" class="pudge">
+    <img src="../images/Group 5.png" class="sf">
+  </div>
+
+  <div class="msg-seq-layer" aria-hidden="true">
+    <div class="msg-seq msg-left">Привет, Пудж, что хотел?</div>
+    <div class="msg-seq msg-right">Да вот, думаю, проведаю друга,<br>узнаю, что он мне на нг дарит</div>
+    <div class="msg-seq msg-left">(Блин, я же забыл про подарок..)<br>Да ты подожди, увидишь..</div>
+    <div class="msg-seq msg-right">Ну ладно, вижу, не хочешь говорить<br>Ну я пойду тогда, жду тебя 31 числа</div>
+
+    <!-- ДОБАВЛЕНО: 5-е сообщение (появится после зимней анимации) -->
+    <div class="msg-seq msg-left msg-five">Надо скорее искать подарок!!!</div>
+  </div>
+            <!-- ...внутри <body>, лучше сразу ПОСЛЕ блока с сообщениями или перед winter-fx -->
+
+<div class="side-links" aria-hidden="true">
+
+  <a class="side-link side-link--right" href="../5/index5.html" rel="noopener">
+    <img src="../images/стрелка.png" alt="" width="300">
+  </a>
+</div>
+
+  <!-- Зимний эффект -->
+  <div class="winter-fx" aria-hidden="true">
+    <div class="winter-fx__tint"></div>
+    <div class="winter-fx__snow" id="snow"></div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const layer = document.querySelector('.msg-seq-layer');
+  const fx    = document.querySelector('.winter-fx');
+  const snow  = document.getElementById('snow');
+  const pudge = document.querySelector('.pudge');
+
+  const five  = document.querySelector('.msg-five');
+  const links = document.querySelector('.side-links');
+
+  // === Настройки ===
+  const FX_FADE_MS = 800;         // должно совпадать с transition opacity у .winter-fx
+  const FX_ON_MS   = 5000;        // сколько "работает" снег (видимая фаза)
+  const SNOW_COUNT = 60;
+
+  // Диалог 1-4 (как у тебя по CSS)
+  const MSG_DUR_MS    = 4600;     // animation-duration: 4.6s
+  const MSG_GAP_MS    = 1000;     // шаг задержки: 5.6s - 4.6s = 1.0s
+  const MSG_COUNT     = 4;
+  const AFTER_DIALOG_WAIT_MS = 2000; // через 2 секунды после конца диалога снова снег
+
+  // Время полного диалога (до исчезновения 4-го)
+  const DIALOG_TOTAL_MS = (MSG_COUNT - 1) * (MSG_DUR_MS + MSG_GAP_MS) + MSG_DUR_MS; // 21400ms
+
+  function makeSnow(count) {
+    if (!snow) return;
+    snow.innerHTML = '';
+
+    for (let i = 0; i < count; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+
+      const size  = (Math.random() * 6 + 3).toFixed(1) + 'px';
+      const x     = (Math.random() * 100).toFixed(2) + 'vw';
+      const dur   = (Math.random() * 3 + 3.5).toFixed(2) + 's';
+      const delay = (-Math.random() * 6).toFixed(2) + 's';
+      const drift = ((Math.random() * 60) - 30).toFixed(1) + 'px';
+
+      flake.style.setProperty('--size', size);
+      flake.style.setProperty('--x', x);
+      flake.style.setProperty('--dur', dur);
+      flake.style.setProperty('--delay', delay);
+      flake.style.setProperty('--drift', drift);
+
+      snow.appendChild(flake);
+    }
+  }
+
+  function startFx({ hidePudge = false } = {}) {
+    if (!fx) return Promise.resolve();
+
+    makeSnow(SNOW_COUNT);
+    fx.classList.add('is-on');
+
+    // Прячем Pudge, когда экран уже стал непрозрачным (не видно момент)
+    if (hidePudge) {
+      setTimeout(() => {
+        if (pudge) pudge.style.display = 'none';
+      }, FX_FADE_MS);
+    }
+
+    return new Promise((resolve) => {
+      // выключаем через FX_ON_MS
+      setTimeout(() => {
+        fx.classList.remove('is-on');
+        if (snow) snow.innerHTML = '';
+
+        // ждём fade-out и завершаем
+        setTimeout(resolve, FX_FADE_MS);
+      }, FX_ON_MS);
+    });
+  }
+
+  function startDialog() {
+    if (!layer) return;
+    // гарантированно перезапускаем, если вдруг надо
+    layer.classList.remove('is-active');
+    // reflow для перезапуска анимации
+    void layer.offsetWidth;
+    layer.classList.add('is-active');
+  }
+
+  function showFifthAndLinks() {
+    if (five) five.classList.add('is-show');
+    if (links) links.classList.add('is-show');
+  }
+
+  async function runSequence() {
+    // 1) Снег сразу при входе
+    await startFx({ hidePudge: false });
+
+    // 2) После конца снега запускаем диалог 1-4
+    startDialog();
+
+    // 3) Ждём конец диалога + 2 секунды
+    await new Promise(r => setTimeout(r, DIALOG_TOTAL_MS + AFTER_DIALOG_WAIT_MS));
+
+    // 4) Снова снег, и в этот раз Pudge пропадает
+    await startFx({ hidePudge: true });
+
+    // 5) После конца второго снега — 5-е сообщение и стрелка
+    showFifthAndLinks();
+  }
+
+  runSequence();
+});
+</script>
+
+
+
+</body>
+</html>

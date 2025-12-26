@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Боссфайт</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="battle">
+
+  <div class="arena" id="arena">
+
+    <div class="hud">
+      <div class="bar">
+        <div class="name">Сфчик</div>
+        <div class="hp"><div class="hp-fill" id="hpHero"></div></div>
+        <div class="hp-text" id="hpHeroText"></div>
+      </div>
+
+      <div class="bar">
+        <div class="name">Шишка</div>
+        <div class="hp"><div class="hp-fill enemy" id="hpEnemy"></div></div>
+        <div class="hp-text" id="hpEnemyText"></div>
+      </div>
+    </div>
+
+    <img class="fighter hero" id="heroSprite" src="../images/sfshishka.png">
+    <div class="vs"><img src="../images/vsshishka.png" alt="vs"></div>
+    <img class="fighter enemy" id="enemySprite" src="../images/shishka.png">
+
+  </div>
+
+  <div class="log" id="log"></div>
+
+  <div class="actions">
+    <button class="btn" id="attack">Удар</button>
+    <button class="btn" id="block">Блок</button>
+  </div>
+
+<div class="result" id="result" hidden>
+  <div class="result-box">
+    <div class="result-text" id="resultText"></div>
+    <button class="btn" id="restart">Заново</button>
+  </div>
+</div>
+</div>
+
+<script src="battle.js"></script>
+</body>
+</html>

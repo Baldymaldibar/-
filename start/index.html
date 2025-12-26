@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стартовое меню</title>
+<style>
+  /* Общие стили для страницы */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url(../images/novomom.jpg) no-repeat center;
+    background-size: cover;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Кнопка Начать игру */
+  .start-button {
+    font-size: 32px;
+    padding: 20px 50px;
+    background: linear-gradient(45deg, #ff0000, #ffff00);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ffffff, 0 0 30px #ff0000 inset;
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: white;
+    font-weight: bold;
+    margin-bottom: -700px;
+  }
+
+  .start-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #ffffff, 0 0 40px #ff0000 inset;
+  }
+
+  /* Снежинки */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+    font-size: 10px;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<button class="start-button" onclick="startGame()">Начать игру</button>
+
+<script>
+  function startGame() {
+    alert("Игра начинается!")
+    window.location.href = '../1/index.html';;
+  }
+
+  // Создаём много снежинок
+  const snowflakeCount = 100; // количество снежинок
+  for (let i = 0; i < snowflakeCount; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    snowflake.textContent = '❄';
+    // случайное начальное положение
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    snowflake.style.fontSize = (Math.random() * 20 + 10) + 'px';
+    snowflake.style.animationDuration = (Math.random() * 10 + 5) + 's';
+    snowflake.style.opacity = Math.random();
+    document.body.appendChild(snowflake);
+  }
+</script>
+
+</body>
+</html>

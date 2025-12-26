@@ -1,0 +1,145 @@
+html, body{
+  height: 100%;
+}
+/* Фон ВСЕГДА на месте */
+body{
+  margin: 0;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* поставь свой фон */
+  background: url("../images/finalfon.jpeg") center / cover no-repeat fixed;
+}
+
+/* если фон у тебя не в body, а в .scene — тоже ок:
+.scene{ background: url(...) center/cover no-repeat; } */
+
+/* Контейнер "телефона" двигаем, фон не трогаем */
+.card-wrap{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 140vh); /* снизу за экраном */
+  opacity: 0;
+
+  transition: transform 900ms ease, opacity 600ms ease;
+  will-change: transform, opacity;
+  z-index: 2;
+}
+
+.card-wrap.is-in{
+  transform: translate(-50%, -50%); /* в центр */
+  opacity: 1;
+}
+
+/* Саму картинку не двигаем transform’ом */
+.card{
+  display: block;
+  width: 23vw;
+  height: auto;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+
+.scene{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Картинка Group 9 — стартует снизу за экраном */
+
+
+
+
+/* Кнопка появляется после выезда */
+.send-btn{
+  position: absolute;
+  left: 50%;
+  bottom: 17vh;
+  transform: translateX(-50%);
+
+  padding: 14px 26px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.85);
+  color: #fff;
+  background: linear-gradient(45deg, #ff2e63, #ff9f1c);
+  cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.send-btn.is-show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) scale(1.03);
+}
+
+/* ===== Снег/экран как на прошлых ===== */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255); /* непрозрачный голубой экран */
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation-name: fall;
+  animation-duration: var(--dur);
+  animation-delay: var(--delay);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+  .card{ transition: none; transform: translate(-50%, -50%); opacity: 1; }
+  .send-btn{ transition: none; opacity: 1; pointer-events: auto; }
+}
+#fireworks{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card{ z-index: 2; }
+.send-btn{ z-index: 3; }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <img src="../images/image 16.png" class="quortero">
+    <img src="../images/sflavka.png" class="sf">
+    <div class="msg-seq-layer" aria-hidden="true">
+    <div class="msg-seq msg-left">Я принес деньги, так где мом?</div>
+    <div class="msg-seq msg-right">Прости, но пока тебя небыло, пришёл Рошан, и купил у меня его</div>
+    <div class="msg-seq msg-left">Ты отдал мом рошану!? Это же был мой подарок пуджу!</div>
+    <div class="msg-seq msg-right">Ну, думаю, тебе не остаётся ничего, кроме как пойти и забрать мом у Рошана, ха-ха, удачи!</div>
+  </div>
+  <a class="next-link" id="nextLink" href="../roshanbattle/index.html">
+  <img id="nextImg" class="next-link__img is-hidden" src="../images/стрелка.png">
+</a>
+</div>
+  <!-- Зимний эффект -->
+  <div class="winter-fx" aria-hidden="true">
+    <div class="winter-fx__tint"></div>
+    <div class="winter-fx__snow" id="snow"></div>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  const layer = document.querySelector('.msg-seq-layer');
+  const messages = layer ? Array.from(layer.querySelectorAll('.msg-seq')) : [];
+
+  // Картинка внутри ссылки (сама ссылка всегда есть, картинка скрыта до конца диалога)
+  const nextImg = document.getElementById('nextImg');
+
+  // Зимний эффект
+  const fx = document.querySelector('.winter-fx');
+  const snow = document.getElementById('snow');
+
+  function makeSnow(count) {
+    if (!snow) return;
+    snow.innerHTML = '';
+
+    for (let i = 0; i < count; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+
+      const size  = (Math.random() * 6 + 3).toFixed(1) + 'px';
+      const x     = (Math.random() * 100).toFixed(2) + 'vw';
+      const dur   = (Math.random() * 3 + 3.5).toFixed(2) + 's';
+      const delay = (-Math.random() * 6).toFixed(2) + 's';
+      const drift = ((Math.random() * 60) - 30).toFixed(1) + 'px';
+
+      flake.style.setProperty('--size', size);
+      flake.style.setProperty('--x', x);
+      flake.style.setProperty('--dur', dur);
+      flake.style.setProperty('--delay', delay);
+      flake.style.setProperty('--drift', drift);
+
+      snow.appendChild(flake);
+    }
+  }
+
+  // По одному сообщению: показать -> 4с -> скрыть -> ждать fade -> следующее
+  async function showMessagesSequentially() {
+    const START_AFTER_MS = 1000; // через 1 секунду после конца снегопада
+    const ON_SCREEN_MS = 4000;   // сообщение на экране 4 секунды
+    const FADE_MS = 350;         // должно совпадать с transition в CSS у .msg-seq
+
+    // Спрятать картинку ссылки перед началом (на всякий случай)
+    if (nextImg) nextImg.classList.add('is-hidden');
+
+    // Скрыть все сообщения перед стартом
+    for (const m of messages) m.classList.remove('is-show', 'is-hide');
+
+    await new Promise(r => setTimeout(r, START_AFTER_MS));
+
+    for (const m of messages) {
+      m.classList.remove('is-hide');
+      m.classList.add('is-show');
+
+      await new Promise(r => setTimeout(r, ON_SCREEN_MS));
+
+      m.classList.remove('is-show');
+      m.classList.add('is-hide');
+
+      await new Promise(r => setTimeout(r, FADE_MS));
+    }
+
+    // После конца диалога — показать картинку в ссылке
+    if (nextImg) nextImg.classList.remove('is-hidden');
+  }
+
+  const FX_ON_MS = 5000;        // снег "работает" 5 секунд
+  const FX_FADE_OUT_MS = 800;   // fade-out у winter-fx (совпадает с CSS transition)
+  const SNOW_COUNT = 60;
+
+  if (!fx) return;
+
+  // Старт снегопада сразу
+  makeSnow(SNOW_COUNT);
+  fx.classList.add('is-on');
+
+  // Выключаем снег, ждём fade-out, потом запускаем диалоги
+  setTimeout(() => {
+    fx.classList.remove('is-on');
+    if (snow) snow.innerHTML = '';
+
+    setTimeout(() => {
+      showMessagesSequentially();
+    }, FX_FADE_OUT_MS);
+  }, FX_ON_MS);
+});
+  
+</script>
+
+</body>
+</html>

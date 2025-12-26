@@ -1,0 +1,100 @@
+body {
+  background: url(../images/торговец.png);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Картинка sf, которая есть в вашем HTML */
+.sf {
+  width: 10vw;
+  margin: 60vh 0 0 37vw;
+  position: absolute;
+  z-index: 100;
+  transform: rotateY(180deg);
+}
+
+/* ===== Зимний эффект (голубой экран + снег) ===== */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483646;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255);
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation: fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+}
+
+/* ===== Ссылки-стрелки ===== */
+.side-links{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.side-links.is-show{ opacity: 1; }
+
+.side-link{
+  position: absolute;
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.side-link img{
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+.side-link--left{
+  left: 28vw;
+  top: 77vh;
+  transform: rotateZ(220deg);
+}
+.side-link--right{
+  right: 37vw;
+  top: 48vh;
+  rotate: -45deg;
+}
+
+@media (max-width: 700px){
+  .side-link img{ width: min(300px, 42vw); }
+}

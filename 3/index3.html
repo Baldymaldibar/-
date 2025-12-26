@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="baracks">
+    <img src="../images/{F44F74D0-944E-44F7-9C7C-934A5FBB06E6} 2.png" class="barackone">
+    <img src="../images/{F44F74D0-944E-44F7-9C7C-934A5FBB06E6} 2.png" class="baracktwo">
+        <img src="../images/dver.png" class="dver">
+        <img src="../images/Group 5.png" class="sf">
+    </div>
+<div class="side-links">
+  <a class="side-link side-link--right" href="../5/index5.html">
+    <img src="../images/стрелка.png" alt="" width="300">
+  </a>
+</div>
+
+  <!-- Контейнер снега заполняется скриптом -->
+  <div class="snow-overlay" id="snowOverlay" aria-hidden="true"></div>
+
+    <!-- Зимний эффект -->
+  <div class="winter-fx" aria-hidden="true">
+    <div class="winter-fx__tint"></div>
+    <div class="winter-fx__snow" id="snow"></div>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Диалоги (1-4)
+    const layer = document.querySelector('.msg-seq-layer');
+    if (layer) layer.classList.add('is-active');
+
+    // Зимний эффект
+    const fx = document.querySelector('.winter-fx');
+    const snow = document.getElementById('snow');
+    const pudge = document.querySelector('.pudge');
+
+    function makeSnow(count) {
+      if (!snow) return;
+      snow.innerHTML = '';
+
+      for (let i = 0; i < count; i++) {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake';
+
+        const size  = (Math.random() * 6 + 3).toFixed(1) + 'px';
+        const x     = (Math.random() * 100).toFixed(2) + 'vw';
+        const dur   = (Math.random() * 3 + 3.5).toFixed(2) + 's';
+        const delay = (-Math.random() * 6).toFixed(2) + 's';
+        const drift = ((Math.random() * 60) - 30).toFixed(1) + 'px';
+
+        flake.style.setProperty('--size', size);
+        flake.style.setProperty('--x', x);
+        flake.style.setProperty('--dur', dur);
+        flake.style.setProperty('--delay', delay);
+        flake.style.setProperty('--drift', drift);
+
+        snow.appendChild(flake);
+      }
+    }
+
+    function showFifthAndLinks() {
+      const five = document.querySelector('.msg-five');
+      const links = document.querySelector('.side-links');
+      if (five) five.classList.add('is-show');
+      if (links) links.classList.add('is-show');
+    }
+
+    const FX_ON_MS = 5000;         // эффект "работает" 5 секунд
+    const FX_FADE_IN_MS = 800;     // совпадает с transition opacity у .winter-fx
+    const FX_FADE_OUT_MS = 800;    // совпадает с transition opacity у .winter-fx
+    const SNOW_COUNT = 60;
+
+    // Запуск СРАЗУ при заходе (после загрузки DOM)
+    if (!fx) return;
+
+    makeSnow(SNOW_COUNT);
+    fx.classList.add('is-on');
+
+
+    // Через 5 секунд начинаем выключение
+    setTimeout(() => {
+      fx.classList.remove('is-on');   // начинается fade-out
+      if (snow) snow.innerHTML = '';
+
+      // После полного fade-out показываем 5-е сообщение + ссылки
+      setTimeout(() => {
+        showFifthAndLinks();
+      }, FX_FADE_OUT_MS);
+    }, FX_ON_MS);
+  });
+</script>
+</body>
+</html>

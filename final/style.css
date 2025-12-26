@@ -1,0 +1,179 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: black;
+}
+
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url("../images/finalfon.jpeg") center / cover no-repeat;
+}
+
+/* Персонажи */
+.character {
+  position: absolute;
+  bottom: 30px;
+}
+
+.sf { left: 5%; }
+.pudge { right: 5%; }
+
+.character img {
+  height: 64vh;
+  max-height: 200000px;
+}
+
+.sf img { transform: scaleX(-1); }
+
+/* Подарок */
+.gift {
+  position: absolute;
+  bottom: 24vh;
+  left: 12%;
+  width: 200px;
+  transition: 2s ease;
+}
+.gift img { width: 100%; }
+
+/* Кнопка */
+#giveBtn {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 16px 36px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+
+  color: white;
+  border: 3px solid #fff;
+  border-radius: 50px;
+
+  background: linear-gradient(45deg, #ff2e63, #ff9f1c);
+  box-shadow: 0 0 15px rgba(255,255,255,0.4),
+              0 0 40px rgba(255,46,99,0.6);
+
+  transition: 0.3s;
+}
+
+#giveBtn:hover {
+  transform: translateX(-50%) scale(1.08);
+  box-shadow: 0 0 20px white,
+              0 0 60px rgba(255,46,99,0.9);
+}
+
+/* Финальный текст */
+.final-text {
+  position: absolute;
+  top: 12%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  text-shadow: 0 0 20px black;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.final-text h1 {
+  font-size: 64px;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.final-text p {
+  font-size: 26px;
+}
+
+/* Canvas салюта */
+#fireworks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ===== Сообщение над Пуджем ===== */
+.pudge-msg{
+  position: absolute;
+  right: 9%;             /* рядом с Pudge (подстроено под right:5%) */
+  bottom: calc(30px + 64vh + 18px); /* над верхом Пуджа */
+  max-width: min(360px, 72vw);
+  top: 40vh;
+
+  padding: 12px 14px;
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 350ms ease, transform 350ms ease;
+
+  z-index: 200;
+  pointer-events: none;
+}
+
+.pudge-msg.is-show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Зимний эффект как в прошлом коде ===== */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255); /* непрозрачный голубой экран */
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation-name: fall;
+  animation-duration: var(--dur);
+  animation-delay: var(--delay);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+}

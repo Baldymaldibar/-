@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Финал — Подарок для Пуджа</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scene">
+
+    <div class="character sf">
+      <img src="../images/sfshapka.png" alt="SF">
+    </div>
+
+    <div class="character pudge" id="pudge">
+      <img src="../images/Group 6.png" alt="Pudge">
+    </div>
+
+    <!-- Сообщение над Пуджем -->
+    <div class="pudge-msg" id="pudgeMsg" aria-live="polite">
+      Спасибо за подарок! Кстати, а мы уже поздравили преподавателей в мессенджере MAX?
+    </div>
+
+    <div class="gift hidden" id="gift">
+      <img src="../images/mask_of_madness.png" alt="mom">
+    </div>
+
+    <button id="giveBtn" type="button">Подарить подарок</button>
+
+    <div class="final-text hidden" id="finalText">
+      <h1>🎄 HAPPY END 🎄</h1>
+      <p>Shadow Fiend смог найти подарок для Пуджа</p>
+    </div>
+
+    <canvas id="fireworks"></canvas>
+  </div>
+
+  <!-- Зимний эффект (снег) -->
+  <div class="winter-fx" aria-hidden="true">
+    <div class="winter-fx__tint"></div>
+    <div class="winter-fx__snow" id="snow"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

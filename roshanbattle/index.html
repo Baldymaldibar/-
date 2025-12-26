@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Shadow Fiend vs Roshan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game">
+    <div id="arena">
+        <div id="skillcheck" class="hidden">
+            <div class="bar">
+                <div class="sweet"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+
+        <div class="fighter-wrap left">
+            <div class="name">SHADOW FIEND</div>
+            <div class="hp-bar-container small">
+                <div class="hp-bar sf-bar" id="sfHp"></div>
+            </div>
+            <img src="../images/sfshishka.png" class="fighter">
+        </div>
+
+        <div class="fighter-wrap right">
+            <div class="name">ROSHAN</div>
+            <div class="hp-bar-container small">
+                <div class="hp-bar bar-rosh" id="roshanHp"></div>
+            </div>
+            <img src="../images/roshan.png" class="fighter roshka">
+        </div>
+
+        <div id="ui">
+            <div class="controls" role="group" aria-label="Боевые действия">
+                <button id="btnAttack" class="btn btn-attack" type="button" title="A">
+                  Attack <span class="hint">A</span>
+                </button>
+                <button id="btnRaze" class="btn btn-skill" type="button" title="S">
+                  Shadowraze <span class="hint">S</span>
+                </button>
+                <button id="btnDodge" class="btn btn-dodge" type="button" title="D">
+                  Dodge <span class="hint">D</span>
+                </button>
+            </div>
+
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

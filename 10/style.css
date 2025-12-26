@@ -1,0 +1,141 @@
+*::-webkit-scrollbar {
+    display: none;
+}
+
+
+body {
+    background-image: url(../images/лавка.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    overflow: hidden;
+}
+
+.container {
+    perspective: 1000px;
+}
+.quortero {
+    position: absolute;
+    transform: rotateX(15deg) rotateZ(11deg);
+    top: 8vh;
+    left: 40vw;
+    width: 23vw;
+}
+.sf {
+    top: 29vh;
+    left: 20vw;
+    position: absolute;
+    width: 34vw;
+}
+
+/* зима */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483646;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255);
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation: fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+}
+/*  */
+/* ===== Сообщения ===== */
+.msg-seq-layer{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.msg-seq{
+  position: absolute;
+  max-width: min(520px, 86vw);
+  padding: 12px 14px;
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.08);
+
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+.msg-seq.is-show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.msg-seq.is-hide{
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+
+/* Позиции (можешь поменять как надо) */
+.msg-seq.msg-left{ left: 36vw; top: 40vh; }
+.msg-seq.msg-right{ left: 56vw; top: 15vh; }
+
+.next-link{
+  position: fixed;
+  transform: translate(-50%, -50%) rotateX(120deg) rotateZ(80deg);
+  z-index: 2147483647;
+  text-decoration: none;
+  top: 94vh;
+  left: 73vw;
+}
+
+/* картинка скрыта */
+.next-link__img{
+  width: 220px;      /* поменяй как нужно */
+  height: auto;
+  display: block;
+
+  opacity: 1;
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+/* скрываем только картинку, ссылка остаётся в DOM */
+.next-link__img.is-hidden{
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none; /* чтобы нельзя было "кликнуть по невидимой картинке" */
+}

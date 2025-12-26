@@ -1,0 +1,74 @@
+body {
+    background-image: url(../images/лесок.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    overflow: hidden;
+}
+
+.strelka img{
+        width: 300px;
+        rotate: -90deg;
+        position: absolute;
+        top: 76vh;
+}
+.one .two{
+perspective: 1000px;
+}
+.one img {
+    left: 20vw;
+    transform: rotateZ(-45deg) rotateY(45deg);
+}
+.two img {
+    left: 70vw;
+    transform: rotateZ(45deg) rotateY(-45deg);
+}
+
+
+
+/* ===== Зимний эффект (голубой экран + снег) ===== */
+.winter-fx{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483646;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+.winter-fx.is-on{ opacity: 1; }
+
+.winter-fx__tint{
+  position: absolute;
+  inset: 0;
+  background: rgb(190, 225, 255);
+}
+
+.winter-fx__snow{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.snowflake{
+  position: absolute;
+  top: -12vh;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 8px rgba(255,255,255,0.35);
+  left: var(--x);
+
+  animation: fall var(--dur) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+@keyframes fall{
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(var(--drift), 120vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .winter-fx{ transition: none; }
+  .snowflake{ animation: none; display: none; }
+}

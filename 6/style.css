@@ -1,0 +1,31 @@
+body {
+  background: url(../images/image.png);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.barackone {
+  width: 20vw;
+  margin: 30vh 0 0 55vw;
+  position: absolute;
+}
+.baracktwo {
+  width: 20vw;
+  margin: 30vh 0 0 64vw;
+  transform: rotateY(180deg);
+  position: absolute;
+}
+.dver {
+  width: 5vw;
+  margin: 39vh 0 0 67vw;
+  position: absolute;
+  z-index: 100;
+}
+.sf {
+  width: 8vw;
+  margin: 40vh 0 0 76vw;
+  position: absolute;
+  z-index: 100;
+}
+
